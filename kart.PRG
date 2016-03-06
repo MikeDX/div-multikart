@@ -88,7 +88,7 @@ cjgraph[]=4,
 75,76,-75,77;
 
 eggman[]=4,
-78,79,-78,80;
+-78,79,78,80;
 
 gngarthur[]=8,
 -81,-82,83,82,
@@ -122,6 +122,11 @@ steve[]=8,
 117,118,119,-118,
 -117,120,121,-120;
 
+bomberman[]=8,
+122,123,124,-123,
+-122,125,126,-125;
+
+
 
 //,3,2,1,4,5,6;
 //1,2,3,4,5,6;
@@ -148,6 +153,7 @@ a=0;
 b=0;
 w=256;
 h=224;
+point = 0;
 //mult=1;
 p1=0;
 begin
@@ -193,8 +199,12 @@ start_mode7(0,file1,coursemap,courseback,2,27);
 
 m7.height=96;
 //m7.camera=player(0,912,684,90000);
-m7.camera=player(-1,981,768,90000);
-m7.distance=50;
+get_point(file, coursemap, 8, &x , &y);
+
+m7.camera=player(-1,x,y,90000);
+
+
+m7.distance=75;
 
 //setup region (player 2)
 define_region(3,0,h/2,w,27);
@@ -208,13 +218,37 @@ m7[1].distance=100;
 m7.color=1;
 m7[1].color=1;
 
+
 //m7[1].camera=
-player(1,943,704,90000);
-player(11,938,704,90000);
-player(12,933,704,90000);
-player(13,928,704,90000);
+
+FROM point = 1 to 8;
+
+get_point(file, coursemap, point, &x , &y);
+
+player(graph,x-10,y,90000);
+player(graph+1,x-5,y,90000);
+player(graph+2,x,y,90000);
+player(graph+3,x+5,y,90000);
+player(graph+4,x+10,y,90000);
+
+//y+=20;
+
+graph +=5;
+
+/*
+player(graph,x-10,y,90000);
+player(graph+1,x-5,y,90000);
+player(graph+2,x,y,90000);
+player(graph+3,x+5,y,90000);
+player(graph+4,x+10,y,90000);
 
 
+
+graph += 5;
+*/
+end
+
+/*
 player(14,981,625,90000);
 player(15,976,625,90000);
 player(16,971,625,90000);
@@ -258,6 +292,7 @@ player(9,971,768,90000);
 player(10,966,768,90000);
 player(36,966,768,90000);
 
+*/
 
 
 m7[1].camera=map();
@@ -301,12 +336,19 @@ private
     accel=0;
     playernum=0;//false;
 p1;
+cpu = false;
+pixel = 0;
+point = 0;
+px=0;
+py=0;
+fangle;
+cangle;
 
 begin
 
     cnumber=c_0;
-    x=x-24;
-    y=y-16;
+  //  x=x-24;
+  //  y=y-16;
 
     x=x*10;
     y=y*10;
@@ -323,6 +365,8 @@ begin
         ps=0;
     end
   else
+    cpu = 1;
+    point = 100;
   //  file = file2;
     if(mid<8)
         xgraph=offset playergraph[mid*30];//mariograph;
@@ -444,7 +488,7 @@ begin
             end
 
             case 36:
-                xgraph = offset tails;
+                xgraph = offset bomberman;
             end
 
 
@@ -459,6 +503,10 @@ begin
   //  xgraph=offset playergraph[mid*30];//
   end
 
+ /* write_int(0,0,mid*10,0,&angle);
+  write_int(0,60,mid*10,0,&fangle);
+  write_int(0,120,mid*10,0,&cangle);
+   */
   //  else
  //       xgraph=offset peachgraph;
  //   end
@@ -484,7 +532,7 @@ if(y<0) y+=10240; end
 
 
 //frame;
-
+if ( cpu == false )
 if(key(_w) && playernum==1)
 height+=2;
 m7.height+=2;
@@ -518,8 +566,13 @@ if(( (key(_alt) || key(_up)) && playernum==1) || (key(_space) && playernum==2))
 else
 
 if(accel>0 && height==0)
-accel--;
+    accel--;
 end
+
+
+
+
+
 end
 
 if(height>0)
@@ -528,8 +581,77 @@ m7.height--;
 end
 
 
+ELSE  // CPU CONTROLS
+
+get_point(file1, coursemap, point, &px, &py );
+px=px*10;
+py=py*10;
+
+//debug;
+
+if (fget_dist(x,y,px,py) < 100)
+
+    point = point +1;
+
+    if (point > 110 )
+        point = 100;
+    end
+
+end
+
+
+IF ( accel < 40+mid )
+    accel++;
+END
+
+angle = fget_angle(x,y,px,py);
+//cangle = fangle - angle;
+//cangle = ( ( cangle + 180000) % 360000 ) - 180000;
+
+/*
+if ( angle != fangle )
+
+
+if ( cangle > 0 )
+angle +=3000;
+END
+
+if (cangle < 0 )
+// > fget_angle(x,y,px,py)+720000)
+angle -=3000;
+END
+
+end
+
+if ( angle > 360000)
+    angle -=360000;
+end
+
+if ( angle < 0 )
+    angle +=360000;
+end
+
+
+
+*/
+
+END
+
 
 advance(accel);
+
+pixel = map_get_pixel(file1,950,x/80,y/80);
+
+if ( pixel==232)
+    advance (-accel);
+end
+
+if ( pixel == 108 )
+    IF ( accel>=10)
+        accel-=4;
+    END
+END
+
 
 frame;
 
