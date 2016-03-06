@@ -65,6 +65,63 @@ masterchief[]=4,
 petey[]=4,
 55,53,-55,54;
 
+littlemac[]=8,
+-56,-57,58,57,
+56,56,59,-56;
+
+honeyqueen[]=4,
+60,61,-60,62;
+
+across1[]=8,
+63,64,65,-64,
+-63,-63,66,63;
+
+across2[]=8,
+67,68,69,-68,
+-67,-67,70,67;
+
+across3[]=8,
+71,72,73,-72,
+-71,-71,74,71;
+
+cjgraph[]=4,
+75,76,-75,77;
+
+eggman[]=4,
+78,79,-78,80;
+
+gngarthur[]=8,
+-81,-82,83,82,
+81,81,84,-81;
+
+nathendrake[]=8,
+88,89,90,-89,
+-88,-88,91,88;
+
+babymario[]=8,
+92,93,94,-93,
+-92,95,96,-95;
+
+babyluigi[]=8,
+97,98,99,-98,
+-97,100,101,-100;
+
+kamek[]=8,
+102,103,104,-103,
+-102,105,106,-105;
+
+sonic[]=8,
+107,108,109,-108,
+-107,110,111,-110;
+
+tails[]=8,
+112,113,114,-113,
+-112,115,116,-115;
+
+steve[]=8,
+117,118,119,-118,
+-117,120,121,-120;
+
 
 //,3,2,1,4,5,6;
 //1,2,3,4,5,6;
@@ -132,12 +189,12 @@ define_region(1,0,0,w,27);
 define_region(2,0,0,w,h/2);
 
 start_scroll(0,file1,back1,back2,1,5);
-start_mode7(0,file1,coursemap,coursemap,2,27);
+start_mode7(0,file1,coursemap,courseback,2,27);
 
-m7.height=48;
+m7.height=96;
 //m7.camera=player(0,912,684,90000);
 m7.camera=player(-1,981,768,90000);
-m7.distance=36;
+m7.distance=50;
 
 //setup region (player 2)
 define_region(3,0,h/2,w,27);
@@ -147,7 +204,7 @@ start_scroll(1,file1,3,2,3,5);
 start_mode7(1,file1,coursemap,courseback,4,27);
 
 m7[1].height=32;
-m7[1].distance=24;
+m7[1].distance=100;
 m7.color=1;
 m7[1].color=1;
 
@@ -171,14 +228,35 @@ player(20,937,648,90000);
 
 
 player(3,981,672,90000);
+player(21,976,672,90000);
+player(22,971,672,90000);
+player(23,966,672,90000);
+
 player(4,952,696,90000);
+player(24,947,696,90000);
+player(25,942,696,90000);
+player(26,937,696,90000);
+
 player(5,981,720,90000);
+player(27,976,720,90000);
+player(28,971,720,90000);
+player(29,966,720,90000);
+
+
 player(6,952,744,90000);
-player(ps,952,603,90000);
-player(7,981,768,90000);
+player(30,947,744,90000);
+player(31,942,744,90000);
+player(32,937,744,90000);
+
+player(33,952,603,90000);
+player(7,947,603,90000);
+player(34,942,603,90000);
+player(35,937,603,90000);
+
 player(8,976,768,90000);
 player(9,971,768,90000);
 player(10,966,768,90000);
+player(36,966,768,90000);
 
 
 
@@ -227,6 +305,8 @@ p1;
 begin
 
     cnumber=c_0;
+    x=x-24;
+    y=y-16;
 
     x=x*10;
     y=y*10;
@@ -236,8 +316,8 @@ begin
     playernum=1;
     mid=rand(0,7);
 
-    file = file2;
-    xgraph=offset pikagraph;//playergraph[mid*30];//mariograph;
+    //file = file2;
+    xgraph=offset playergraph[mid*30];//mariograph;
 
     if(mid!=0)
         ps=0;
@@ -302,6 +382,73 @@ begin
             case 20:
                 xgraph = offset petey;
             end
+
+            case 21:
+                xgraph = offset littlemac;
+            end
+
+            case 22:
+                xgraph = offset honeyqueen;
+            end
+
+            case 23:
+                xgraph = offset across1;
+            end
+
+            case 24:
+                xgraph = offset across2;
+            end
+
+            case 25:
+                xgraph = offset across3;
+            end
+
+            case 26:
+                xgraph = offset cjgraph;
+            end
+
+            case 27:
+                xgraph = offset eggman;
+            end
+
+            case 28:
+                xgraph = offset gngarthur;
+            end
+
+            case 29:
+                xgraph = offset nathendrake;
+            end
+
+            case 30:
+                xgraph = offset babymario;
+            end
+
+            case 31:
+                xgraph = offset babyluigi;
+            end
+
+            case 32:
+                xgraph = offset kamek;
+            end
+
+            case 33:
+                xgraph = offset sonic;
+            end
+
+            case 34:
+                xgraph = offset tails;
+            end
+
+            case 35:
+                xgraph = offset steve;
+            end
+
+            case 36:
+                xgraph = offset tails;
+            end
+
+
+
 
 
 
@@ -404,7 +551,7 @@ write_int(0,0,20,0,&m7[1].distance);
 x=512;
 y=512;
 angle=-270000;
-height=-640;
+height=-512;
 m7[1].height=768*3;
 m7[1].focus=224;
 m7[1].distance=1408;
@@ -481,8 +628,14 @@ cnumber=c_1;
 ctype=c_m7;
 resolution=father.resolution;
 size=2000;
+
 xgraph=father.xgraph;
 flags=father.flags;
+
+if ( xgraph == offset eggman )
+    size=1000;
+end
+
 
 loop
 x=father.x;
