@@ -3,6 +3,9 @@ program kart;
 
 global
 
+pipegraph[] = 1,700;
+
+
 playergraph[12*30];
 
 mariograph[]=28,
@@ -126,6 +129,31 @@ bomberman[]=8,
 122,123,124,-123,
 -122,125,126,-125;
 
+bigdaddy[]=8,
+127,128,129,129,
+130,130,131,127;
+
+bowserjr[]=8,
+132,133,134,-133,
+-132,-135,136,135;
+
+srageaxel[]=8,
+137,138,139,-138,
+-137,137,140,137;
+
+srageskate[]=8,
+141,142,143,-142,
+-141,-141,144,141;
+
+solidsnake[]=4,
+146,145,
+-146,147;
+
+ratchetclank[]=8,
+148,149,150,-149,
+-148,-148,151,148;
+
+
 
 
 //,3,2,1,4,5,6;
@@ -151,8 +179,8 @@ private
 
 a=0;
 b=0;
-w=800;
-h=600;
+w=640;
+h=480;
 point = 0;
 //mult=1;
 p1=0;
@@ -195,7 +223,7 @@ define_region(1,0,0,w,27);
 define_region(2,0,0,w,h/2);
 
 start_scroll(0,file1,back1,back2,1,5);
-start_mode7(0,file1,coursemap,courseback,2,27);
+start_mode7(0,file1,coursemap,courseback,2,25);
 
 m7.height=96;
 //m7.camera=player(0,912,684,90000);
@@ -249,6 +277,14 @@ player(graph+4,x+10,y,90000);
 graph += 5;
 */
 end
+
+FROM point = 10 to 17;// to 255;
+
+get_point(file, coursemap, point, &x, &y);
+pipe(x,y);
+
+end
+
 
 /*
 player(14,981,625,90000);
@@ -330,6 +366,26 @@ end
 
 end
 
+PROCESS pipe(x,y);
+
+begin
+
+ctype = c_m7;
+x=x*10;
+y=y*10;
+resolution=10;
+
+xgraph = offset pipegraph;
+cnumber = c_0;
+mapchar();
+
+loop
+
+frame;
+end
+
+end
+
 
 process player(mid,x,y,angle)
 
@@ -348,7 +404,7 @@ cangle;
 
 begin
 
-    cnumber=c_0;
+   cnumber=c_0;
   //  x=x-24;
   //  y=y-16;
 
@@ -369,6 +425,14 @@ begin
   else
     cpu = 1;
     point = 100;
+    get_point(file1, coursemap, point, &px, &py );
+
+    px=px+rand(-10,10);
+    py=py+rand(-10,10);
+
+    px=px*10;
+    py=py*10;
+
   //  file = file2;
     if(mid<8)
         xgraph=offset playergraph[mid*30];//mariograph;
@@ -454,7 +518,6 @@ begin
             end
 
             case 27:
-            debug;
                 xgraph = offset eggman;
             end
 
@@ -494,8 +557,29 @@ begin
                 xgraph = offset bomberman;
             end
 
+            case 37:
+                xgraph = offset bigdaddy;
+            end
 
+            case 38:
+                xgraph = offset bowserjr;
+            end
 
+            case 39:
+                xgraph = offset srageaxel;
+            end
+
+            case 40:
+                xgraph = offset srageskate;
+            end
+
+            case 41:
+                xgraph = offset solidsnake;
+            end
+
+            case 42:
+                xgraph = offset ratchetclank;
+            end
 
 
 
@@ -586,19 +670,27 @@ end
 
 ELSE  // CPU CONTROLS
 
-get_point(file1, coursemap, point, &px, &py );
-px=px*10;
-py=py*10;
+//px=px*10;
+//py=py*10;
 
 //debug;
 
-if (fget_dist(x,y,px,py) < 200)
-
+if (fget_dist(x,y,px,py) < 100)
+    //debug;
     point = point +1;
 
     if (point > 110 )
         point = 100;
     end
+
+        get_point(file1, coursemap, point, &px, &py );
+
+    px=px+rand(-20,20);
+    py=py+rand(-20,20);
+    px=px*10;
+    py=py*10;
+
+
 
 end
 
@@ -678,9 +770,9 @@ y=512;
 angle=-270000;
 height=-512;
 m7[1].height=768*3;
-m7[1].focus=224;
-m7[1].distance=1408;
-m7[1].horizon=-44;
+m7[1].focus=300;//1408;
+m7[1].distance=1408;//393;//1408;
+m7[1].horizon=-145;
 
 //m7[1].focus=512;
 
@@ -752,13 +844,13 @@ cnumber=c_1;
 
 ctype=c_m7;
 resolution=father.resolution;
-size=2000;
+size=1000;
 
 xgraph=father.xgraph;
 flags=father.flags;
 
 if ( xgraph == offset eggman )
-    size=1000;
+  size=1000;
 end
 
 
