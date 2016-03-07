@@ -248,10 +248,17 @@ m7[1].color=1;
 
 
 //m7[1].camera=
+while(!key(_space))
+frame;
+end
 
 FROM point = 1 to 8;
 
 get_point(file, coursemap, point, &x , &y);
+//debug;
+x=926;//
+//x-=30;
+x-=5;
 
 player(graph,x-15,y,90000);
 player(graph+1,x-10,y,90000);
@@ -260,10 +267,23 @@ player(graph+3,x,y,90000);
 player(graph+4,x+5,y,90000);
 player(graph+5,x+10,y,90000);
 player(graph+6,x+15,y,90000);
+player(graph+7,x+20,y,90000);
+player(graph+8,x+25,y,90000);
+player(graph+9,x+30,y,90000);
+player(graph+10,x+35,y,90000);
+player(graph+11,x+40,y,90000);
+player(graph+12,x+45,y,90000);
+player(graph+13,x+50,y,90000);
+player(graph+14,x+55,y,90000);
+
+
 
 //y+=20;
 
-graph +=7;
+graph +=15;
+IF ( graph > 42 )
+graph = 0;
+END
 
 /*
 player(graph,x-10,y,90000);
@@ -415,14 +435,15 @@ begin
   //  if(mid&1)
   if(mid==-1)
     playernum=1;
-    mid=rand(0,7);
+    mid=rand(0,42);
 
     //file = file2;
-    xgraph=offset playergraph[mid*30];//mariograph;
+    //xgraph=offset playergraph[mid*30];//mariograph;
 
     if(mid!=0)
         ps=0;
     end
+
   else
     cpu = 1;
     point = 100;
@@ -433,7 +454,7 @@ begin
 
     px=px*10;
     py=py*10;
-
+  end
   //  file = file2;
     if(mid<8)
         xgraph=offset playergraph[mid*30];//mariograph;
@@ -585,7 +606,7 @@ begin
 
 
         end
-    end
+
 
 
   //  xgraph=offset playergraph[mid*30];//
@@ -647,7 +668,7 @@ end
 
 
 if(( (key(_alt) || key(_up)) && playernum==1) || (key(_space) && playernum==2))
-    if(accel<40);
+    if(accel<40 + 40 * (key(_space)));
     accel+=2;
     end;
     //advance(50);
@@ -676,7 +697,7 @@ ELSE  // CPU CONTROLS
 
 //debug;
 
-if (fget_dist(x,y,px,py) < 600)
+if (fget_dist(x,y,px,py) < accel*10)
     //debug;
     point = point +1;
 
@@ -686,8 +707,8 @@ if (fget_dist(x,y,px,py) < 600)
 
         get_point(file1, coursemap, point, &px, &py );
 
-    //px=px+rand(-20,20);
-    //py=py+rand(-20,20);
+    px=px+rand(-accel/10,accel/10);
+    py=py+rand(-accel/10,accel/10);
     px=px*10;
     py=py*10;
 
@@ -696,13 +717,13 @@ if (fget_dist(x,y,px,py) < 600)
 end
 
 
-IF ( accel < 40+mid )
+IF ( accel < 40 +mid )
     accel++;
 END
 
 fangle = fget_angle(x,y,px,py);
 
-angle = near_angle( angle, fangle ,3000 );
+angle = near_angle( angle, fangle ,3000 +accel*10);
 
 /*IF ( (fangle - angle + 360000) % 360000 < 180000)
 
