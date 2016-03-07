@@ -401,6 +401,7 @@ px=0;
 py=0;
 fangle;
 cangle;
+dangle;
 
 begin
 
@@ -675,7 +676,7 @@ ELSE  // CPU CONTROLS
 
 //debug;
 
-if (fget_dist(x,y,px,py) < 100)
+if (fget_dist(x,y,px,py) < 600)
     //debug;
     point = point +1;
 
@@ -685,8 +686,8 @@ if (fget_dist(x,y,px,py) < 100)
 
         get_point(file1, coursemap, point, &px, &py );
 
-    px=px+rand(-20,20);
-    py=py+rand(-20,20);
+    //px=px+rand(-20,20);
+    //py=py+rand(-20,20);
     px=px*10;
     py=py*10;
 
@@ -699,7 +700,24 @@ IF ( accel < 40+mid )
     accel++;
 END
 
-angle = fget_angle(x,y,px,py);
+fangle = fget_angle(x,y,px,py);
+
+angle = near_angle( angle, fangle ,3000 );
+
+/*IF ( (fangle - angle + 360000) % 360000 < 180000)
+
+        angle +=3000;
+
+    END
+
+
+    IF ( (fangle - angle + 360000) % 360000 > 180000)
+
+        angle -=3000;
+
+    END
+
+*/
 //cangle = fangle - angle;
 //cangle = ( ( cangle + 180000) % 360000 ) - 180000;
 
@@ -850,7 +868,7 @@ xgraph=father.xgraph;
 flags=father.flags;
 
 if ( xgraph == offset eggman )
-  size=1000;
+  size=500;
 end
 
 
