@@ -136,7 +136,7 @@ bomberman[]=8,
 // 902 = ghost house level
 // 903 = bowsers castle
 coursemap = 900;
-back1=805;
+back1=801;
 back2=0;
 // 863 = bowsers castle
 // 852 = mario circuit
@@ -151,8 +151,8 @@ private
 
 a=0;
 b=0;
-w=256;
-h=224;
+w=800;
+h=600;
 point = 0;
 //mult=1;
 p1=0;
@@ -188,7 +188,7 @@ end
 
 
 // set graphics mode
-set_mode(256224);
+set_mode(w*1000+h);
 
 // setup region player 1
 define_region(1,0,0,w,27);
@@ -204,7 +204,7 @@ get_point(file, coursemap, 8, &x , &y);
 m7.camera=player(-1,x,y,90000);
 
 
-m7.distance=75;
+m7.distance=60;
 
 //setup region (player 2)
 define_region(3,0,h/2,w,27);
@@ -225,15 +225,17 @@ FROM point = 1 to 8;
 
 get_point(file, coursemap, point, &x , &y);
 
-player(graph,x-10,y,90000);
-player(graph+1,x-5,y,90000);
-player(graph+2,x,y,90000);
-player(graph+3,x+5,y,90000);
-player(graph+4,x+10,y,90000);
+player(graph,x-15,y,90000);
+player(graph+1,x-10,y,90000);
+player(graph+2,x-5,y,90000);
+player(graph+3,x,y,90000);
+player(graph+4,x+5,y,90000);
+player(graph+5,x+10,y,90000);
+player(graph+6,x+15,y,90000);
 
 //y+=20;
 
-graph +=5;
+graph +=7;
 
 /*
 player(graph,x-10,y,90000);
@@ -452,6 +454,7 @@ begin
             end
 
             case 27:
+            debug;
                 xgraph = offset eggman;
             end
 
@@ -589,7 +592,7 @@ py=py*10;
 
 //debug;
 
-if (fget_dist(x,y,px,py) < 100)
+if (fget_dist(x,y,px,py) < 200)
 
     point = point +1;
 
