@@ -3,6 +3,8 @@ program kart;
 
 global
 
+kartid=0;
+
 pipegraph[] = 1,700;
 
 
@@ -174,6 +176,22 @@ ps=7;
 
 file1;
 file2;
+bstate=0;
+bstopped=0;
+butt7;
+butt3;
+bstoppin=0;
+ammo=0;
+bammo;
+btime;
+c_coin = 143;
+coins=0;
+
+local
+
+speed;
+
+
 
 private
 
@@ -248,13 +266,18 @@ m7[1].color=1;
 
 
 //m7[1].camera=
-while(!key(_space))
+//while(!key(_space))
 frame;
-end
+//end
 
 FROM point = 1 to 8;
-
+//point =1 ;
 get_point(file, coursemap, point, &x , &y);
+y-=20;
+
+
+//FROM point = 1 to 4;
+y+=20;
 //debug;
 x=926;//
 //x-=30;
@@ -380,6 +403,18 @@ loop
 
 //    frame;
 //end
+
+if(key(_f1))
+x=rand(0,100);
+for( point = 0 ;point<x;point++)
+
+m7.camera=get_id(type player);
+//frame;
+end
+
+end
+
+
 frame;
 
 end
@@ -422,8 +457,18 @@ py=0;
 fangle;
 cangle;
 dangle;
+kid=0;
+c_dist;
+colour_check;
+c_qblock=140;
+
+can_pickup_bonus=1;
+track=900;
+
 
 begin
+    kartid++;
+    kid=kartid;
 
    cnumber=c_0;
   //  x=x-24;
@@ -689,7 +734,48 @@ height--;
 m7.height--;
 end
 
+speed = accel;
 
+
+
+//bonus catcher//////////////////////////////
+from point=70 to 83;
+ get_point(0,coursemap,point,&px,&py); px*=10;py*=10;
+ c_dist=fget_dist(x,y,px,py);
+ colour_check=map_get_pixel(0,coursemap,(px/10-1),py/10-3);
+ if(colour_check==c_qblock and c_dist<90 and can_pickup_bonus)
+  can_pickup_bonus=false;bonus_spinner();
+  if(track==900)map_put(0,coursemap,890,px/10+1,py/10+1);else
+  if(track==901)map_xput(0,coursemap,890,px/10-1,py/10-1,0,100,3);else
+  if(track==902)map_xput(0,coursemap,890,px/10-1,py/10-1,0,100,3);else
+  if(track==903)map_put(0,coursemap,891,px/10,py/10+1);else
+  if(track==904)map_put(0,coursemap,891,px/10,py/10+1);else
+  end end end end end
+ end
+end//////////////////////////////////////
+
+
+
+
+//coin collector//////////////////////////////
+from point=20 to 69;
+ get_point(0,track,point,&px,&py);px*=10;py*=10;
+ c_dist=fget_dist(x,y,px,py);
+ colour_check=map_get_pixel(0,coursemap,px/10,py/10);
+ if(colour_check==c_coin and c_dist<60)
+  coins++;//20to54coins //60to71bonus's
+  coin_flip(x,y);
+  if(track==900)map_put(0,coursemap,854,px/10,py/10);else
+  if(track==901)map_put(0,coursemap,855,px/10,py/10);else
+  if(track==902)
+   if((point>28 and point<32)or(point>38))map_put(0,coursemap,862,px/10+1,py/10+1);else
+   map_put(0,coursemap,861,px/10+1,py/10+1);end
+  else
+  if(track==903)map_put(0,coursemap,854,px/10,py/10);else
+  if(track==904)map_put(0,coursemap,854,px/10,py/10);else
+  end end end end end
+ end
+end//////////////////////////////////////
 ELSE  // CPU CONTROLS
 
 //px=px*10;
@@ -717,7 +803,7 @@ if (fget_dist(x,y,px,py) < accel*10)
 end
 
 
-IF ( accel < 40 +mid )
+IF ( accel < 40 +kid/4 )
     accel++;
 END
 
@@ -792,7 +878,6 @@ frame;
 end
 
 end
-
 
 process map()
 
@@ -906,3 +991,60 @@ frame;
 end
 
 end
+
+
+
+process bonus_spinner();
+private bspin=32;
+
+begin x=320;y=100;z=-200;graph=580;size=200;region=3;
+      bstate=rand(0,13);bstopped=0;
+
+region=1;
+
+z=-2048;
+
+loop
+ if(bstate>13)bstate=1;end y+=bspin;
+ if(y>150)y=0;bstate+=1;end
+
+ switch(bstate)
+  case 1: graph=580;size=200;end
+  case 2: graph=581;size=200;end
+  case 3: graph=582;size=200;end
+  case 4: graph=583;size=200;end
+  case 5: graph=589;size=225;end
+  case 6: graph=593;size=200;end
+  case 7: graph=586;size=200;end
+  case 8: graph=587;size=200;end
+  case 9: graph=580;size=200;end
+  case 10: graph=589;size=225;end
+  case 11: graph=590;size=125;end
+  case 12: graph=591;size=170;end
+  case 13: graph=592;size=100;end
+ end
+
+ IF(key(_b))bstate+=1;frame(1000);end
+
+
+ if(butt7 or butt3)bstoppin=true;end
+ if(bstoppin)bspin--;end
+
+ if(bspin<0)y=52;
+  if(ammo==0)bstopped=true; /*pcar.canfire=true;*/end
+  if(bstate==8)bammo=10;btime=300;end
+ end
+
+frame;end end
+///////////////////////////////
+
+
+process coin_flip(x,y);
+private coin_move;
+begin ctype=c_m7;graph=500;resolution=10;size=50;
+      coin_move=rand(-10,10);
+repeat //X=FATHER.X; Y=FATHER.Y;
+ height+=5+father.speed/10;flags=rand(0,3);//size+=3;
+ x+=coin_move;y+=coin_move;
+frame;until(height>80);end
+/////////////////////////////////////
