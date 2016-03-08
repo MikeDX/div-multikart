@@ -474,6 +474,49 @@ starfox[]=8,
 -412,-412,415,412;
 
 
+tanooki[]=4,
+416,417,
+-416,418;
+
+
+toadette[]=8,
+419,420,421,-420,
+-419,422,423,-422;
+
+
+tyrisflare[]=8,
+424,425,426,-425,
+-424,427,428,-427;
+
+
+waluigi[]=8,
+429,430,431,-430,
+-429,432,433,-432;
+
+
+wario[]=8,
+434,435,436,-435,
+-434,437,438,-437;
+
+
+wendykoopa[]=8,
+439,440,441,-440,
+-439,442,443,-442;
+
+
+wriggler1[]=4,
+-444,445,
+444,446;
+
+wriggler2[]=4,
+-447,448,
+447,446;
+
+wriggler3[]=4,
+-449,450,
+449,446;
+
+
 
 
 
@@ -1169,6 +1212,34 @@ begin
 
             case 91:
                 xgraph = &starfox;
+            end
+
+            case 92:
+                xgraph = &tanooki;
+            end
+
+            case 93:
+                xgraph = &toadette;
+            end
+
+            case 94:
+                xgraph = &tyrisflare;
+            end
+
+            case 95:
+                xgraph = &waluigi;
+            end
+
+            case 96:
+                xgraph = &wario;
+            end
+
+            case 97:
+                xgraph = &wendykoopa;
+            end
+
+            case 98:
+                xgraph = &wriggler1;
             end
 
 
