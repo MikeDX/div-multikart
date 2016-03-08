@@ -7,6 +7,8 @@ kartid=0;
 
 pipegraph[] = 1,700;
 
+pacanim[4];
+
 
 playergraph[12*30];
 
@@ -397,8 +399,8 @@ pongr[]=4,
 353,354,
 -353,355;
 
-pongball[]=1,
-357;
+pongball[]=4,
+357,357,357,357;
 
 
 qbert[]=4,
@@ -571,6 +573,16 @@ begin
 file1=load_fpg("kart101/kart2.FPG");
 file2=load_fpg("kart101/ash.fpg");
 
+pacanim[0]=&pacman1;
+pacanim[1]=&pacman2;
+pacanim[2]=&pacman3;
+pacanim[3]=&pacman2;
+
+
+
+
+
+
 
 fade_on();
 set_fps(30,0);
@@ -692,6 +704,8 @@ get_point(file, coursemap, point, &x, &y);
 pipe(x,y);
 
 end
+
+pong_ball();
 
 
 /*
@@ -829,6 +843,8 @@ c_qblock=140;
 
 can_pickup_bonus=1;
 track=900;
+
+anim=0;
 
 
 begin
@@ -1274,6 +1290,17 @@ begin
 p1=m7.camera;
 loop
 
+if(mid==72)
+anim++;
+if(anim==9);
+anim=0;
+end
+
+xgraph = pacanim[anim/2];
+
+end
+
+
 if(x>10240) x-=10240; end
 if(y>10240) y-=10240; end
 if(x<0) x+=10240; end
@@ -1399,7 +1426,7 @@ if (fget_dist(x,y,px,py) < accel*10)
 end
 
 
-IF ( accel < 40 +kid )
+IF ( accel < 40 +kid/2 )
     accel++;
 END
 
@@ -1581,6 +1608,7 @@ z=father.z;
 file = father.file;
 angle=father.angle;
 height=father.height;
+xgraph = father.xgraph;
 
 frame;
 
@@ -1644,3 +1672,101 @@ repeat //X=FATHER.X; Y=FATHER.Y;
  x+=coin_move;y+=coin_move;
 frame;until(height>80);end
 /////////////////////////////////////
+
+
+process pong_ball();
+
+private
+
+pid;
+rpid;
+bpid;
+
+tx;
+ty;
+fdist;
+
+
+BEGIN
+file = file2;
+
+xgraph = offset pongball;
+//graph=357;
+ctype = c_m7;
+cnumber=c_0;
+size=100;
+angle=90000;
+
+pid = get_id(type player);
+
+x=pid.x;
+y=pid.y;
+
+
+while ( pid.xgraph != OFFSET pongb )
+
+pid = get_id(type player);
+
+end
+
+bpid = pid;
+
+frame;
+
+pid = get_id(type player);
+
+while ( pid.xgraph != OFFSET pongr )
+
+pid = get_id(type player);
+
+end
+
+rpid = pid;
+
+
+
+tx = pid.x;
+ty = pid.y;
+
+//pid = get_id(type player);
+
+
+resolution = 10;
+
+height=15;
+
+
+mapchar();
+//debug;
+
+loop
+//pid = get_id(type player);
+fdist = get_dist(pid);
+
+if ( fdist < 10 )
+
+    if ( pid == rpid )
+        pid = bpid;
+     else
+        pid = rpid;
+        //debug;
+    end
+
+end
+
+angle = get_angle(pid);
+
+advance(100);
+
+
+
+//x=pid.x;
+//y=pid.y;
+
+frame;
+
+end
+
+end
+
+
