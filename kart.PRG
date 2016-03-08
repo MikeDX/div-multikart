@@ -365,6 +365,56 @@ pacman3[]=8,
 -322,-322,324,322;
 
 
+parapa[]=12,
+315,316,317,318,-317,-316,
+-315,-315,325,325,325,315,315;
+
+
+paratroopa1[]=8,
+326,327,328,-327,
+-326,329,330,-329;
+
+paratroopa2[]=8,
+331,327,332,-327,
+-331,329,333,-329;
+
+
+peach[]=8,
+334,335,336,-335,
+-334,337,338,-337;
+
+
+pit[]=8,
+346,347,348,-347,
+-346,-346,349,346;
+
+
+pongb[]=4,
+350,351,
+-350,352;
+
+pongr[]=4,
+353,354,
+-353,355;
+
+pongball[]=1,
+357;
+
+
+qbert[]=4,
+358,359,
+-358,360;
+
+
+rabbid[]=8,
+361,362,363,-362,
+-361,364,365,-364;
+
+
+rayman[]=4,
+366,367,
+-366,368;
+
 
 
 
@@ -515,7 +565,7 @@ player(graph+14,x+55,y,90000);
 //y+=20;
 
 graph +=15;
-IF ( graph > 70 )
+IF ( graph > 90 )
 graph = 1;
 break;
 
@@ -985,6 +1035,45 @@ begin
             case 72:
                 xgraph = &pacman1;
             end
+
+            case 73:
+                xgraph = &parapa;
+            end
+
+            case 74:
+                xgraph = &paratroopa1;
+            end
+
+            case 75:
+                xgraph = &peach;
+            end
+
+            case 76:
+                xgraph = &pit;
+            end
+
+            case 77:
+                xgraph = &pongb;
+            end
+
+            case 78:
+                xgraph = &pongr;
+            end
+
+            case 79:
+                xgraph = &qbert;
+            end
+
+            case 80:
+                xgraph = &rabbid;
+            end
+
+            case 81:
+                xgraph = &rayman;
+            end
+
+
+
 
 
         end
