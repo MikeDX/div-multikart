@@ -283,6 +283,23 @@ king[]=4,
 238,239,
 -238,240;
 
+kingboo1[]=8,
+242,243,244,-243,
+-242,245,246,-245;
+
+
+kingboo2[]=8,
+248,243,247,-243,
+-248,245,249,-245;
+
+
+kingboo3[]=8,
+251,243,250,-243,
+-251,245,252,-245;
+
+kingboo4[]=8,
+254,243,253,-243,
+-254,245,255,-245;
 
 
 
@@ -433,7 +450,7 @@ player(graph+14,x+55,y,90000);
 //y+=20;
 
 graph +=15;
-IF ( graph > 61 )
+IF ( graph > 62 )
 graph = 1;
 break;
 
@@ -663,6 +680,7 @@ begin
                 xgraph = offset tetris3;
             end
 
+
             case 14:
                 xgraph = offset samus;
             end
@@ -856,8 +874,13 @@ begin
             end
 
             case 62:
-                xgraph = & iggy;
+                xgraph = & king;
             end
+
+            case 63:
+                xgraph = & kingboo1;
+            end
+
 
 
 
@@ -1015,7 +1038,7 @@ if (fget_dist(x,y,px,py) < accel*10)
 end
 
 
-IF ( accel < 40 +kid/4 )
+IF ( accel < 40 +kid )
     accel++;
 END
 
