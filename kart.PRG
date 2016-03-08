@@ -302,6 +302,71 @@ kingboo4[]=8,
 -254,245,255,-245;
 
 
+kratos[]=8,             // GOD OF WAR
+256,257,258,259,
+260,260,261,256;
+
+
+laracroft[]=8,          // TOMB RAIDER
+262,263,264,-263,
+-262,265,266,267;
+
+
+larrykoopa[]=8,
+268,269,270,-269,
+-268,271,272,-271;
+
+
+lemmykoopa[]=8,
+273,274,275,-274,
+-273,276,277,-276;
+
+
+link[]=8,
+278,279,280,281,
+282,283,284,285;
+
+
+ludwigkoopa[]=8,
+286,287,288,-287,
+-286,289,290,-289;
+
+
+metalmario[]=8,
+291,292,293,-292,
+-291,294,295,-294;
+
+
+mortonkoopa[]=8,
+296,297,298,-297,
+-296,-296,299,296;
+
+
+ness[]=8,             // EARTHBOUND
+300,301,302,303,
+304,304,305,300;
+
+
+oli[]=8,
+306,307,308,-307,
+-306,309,310,-309;
+
+
+pacman1[]=8,
+311,312,313,-312,
+-311,-311,314,311;
+
+pacman2[]=8,
+319,320,313,-320,
+-319,-319,321,319;
+
+pacman3[]=8,
+322,323,313,-323,
+-322,-322,324,322;
+
+
+
+
 
 
 //,3,2,1,4,5,6;
@@ -450,7 +515,7 @@ player(graph+14,x+55,y,90000);
 //y+=20;
 
 graph +=15;
-IF ( graph > 62 )
+IF ( graph > 70 )
 graph = 1;
 break;
 
@@ -881,8 +946,45 @@ begin
                 xgraph = & kingboo1;
             end
 
+            case 64:
+                xgraph = & kratos;
+            end
 
+            case 65:
+                xgraph = &laracroft;
+            end
 
+            case 66:
+                xgraph = &larrykoopa;
+            end
+
+            case 66:
+                xgraph = &lemmykoopa;
+            end
+
+            case 67:
+                xgraph = &link;
+            end
+
+            case 68:
+                xgraph = &ludwigkoopa;
+            end
+
+            case 69:
+                xgraph = &metalmario;
+            end
+
+            case 70:
+                xgraph = &mortonkoopa;
+            end
+
+            case 71:
+                xgraph = &oli;
+            end
+
+            case 72:
+                xgraph = &pacman1;
+            end
 
 
         end
