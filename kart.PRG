@@ -416,6 +416,54 @@ rayman[]=4,
 -366,368;
 
 
+ghostred1[]=4,
+369,370,
+-369,371;
+
+ghostred2[]=4,
+372,373,
+-372,371;
+
+ghostred3[]=4,
+374,375,
+-374,371;
+
+
+yoshired[]=12,
+376,377,377,378,-377,-377,
+-376,-379,380,381,-380,379;
+
+
+rob[]=8,
+382,383,384,-383,
+-382,-382,385,382;
+
+
+ros[]=8,
+386,387,388,-387,
+-386,390,391,-390;
+
+
+roykoopa[]=8,
+392,393,394,-393,
+-392,-392,395,392;
+
+
+ryu[]=8,
+396,397,398,-397,
+-396,-396,399,396;
+
+
+sack[]=8,
+400,401,402,-401,
+-400,-400,403,400;
+
+
+shyguy[]=8,
+404,405,406,-405,
+-404,-404,407,404;
+
+
 
 
 
@@ -565,8 +613,8 @@ player(graph+14,x+55,y,90000);
 //y+=20;
 
 graph +=15;
-IF ( graph > 90 )
-graph = 1;
+IF ( graph > 100 )
+graph = 0;
 break;
 
 END
@@ -1071,6 +1119,40 @@ begin
             case 81:
                 xgraph = &rayman;
             end
+
+            case 82:
+                xgraph = &ghostred1;
+            end
+
+            case 83:
+                xgraph = &yoshired;
+            end
+
+            case 84:
+                xgraph = &rob;
+            end
+
+            case 85:
+                xgraph = &ros;
+            end
+
+            case 86:
+                xgraph = &roykoopa;
+            end
+
+            case 87:
+                xgraph = &ryu;
+            end
+
+            case 88:
+                xgraph = &sack;
+            end
+
+            case 89:
+                xgraph = &sack;
+            end
+
+
 
 
 
