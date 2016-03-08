@@ -464,6 +464,17 @@ shyguy[]=8,
 -404,-404,407,404;
 
 
+spyro[]=8,
+408,409,410,-409,
+-408,-408,411,408;
+
+
+starfox[]=8,
+412,413,414,-413,
+-412,-412,415,412;
+
+
+
 
 
 
@@ -1149,10 +1160,16 @@ begin
             end
 
             case 89:
-                xgraph = &sack;
+                xgraph = &shyguy;
             end
 
+            case 90:
+                xgraph = &spyro;
+            end
 
+            case 91:
+                xgraph = &starfox;
+            end
 
 
 
