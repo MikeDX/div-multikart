@@ -1600,6 +1600,11 @@ if ( xgraph == offset eggman )
   size=500;
 end
 
+if ( xgraph == offset pongball )
+height = 100;
+end
+
+
 
 loop
 x=father.x;
@@ -1607,7 +1612,10 @@ y=father.y;
 z=father.z;
 file = father.file;
 angle=father.angle;
+if(xgraph != offset pongball )
 height=father.height;
+end
+
 xgraph = father.xgraph;
 
 frame;
@@ -1743,7 +1751,7 @@ loop
 //pid = get_id(type player);
 fdist = get_dist(pid);
 
-if ( fdist < 10 )
+if ( fdist < 100 )
 
     if ( pid == rpid )
         pid = bpid;
