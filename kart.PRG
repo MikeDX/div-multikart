@@ -20,6 +20,7 @@ mariograph[]=28,
 12, // down
 11,11,10,10,9,9;
 
+
 ashgraph[]=8,
 -1,  // right
 6,
@@ -30,13 +31,16 @@ ashgraph[]=8,
 3,// down
 -2;
 
+
 pikagraph[]=8,
 7,8,9,-8,
 -7,10,11,-10;
 
+
 turbograph[]=8,
 -12,-13,14,13,
 12,15,16,-15;
+
 
 tetris1[]=4,
 17,18,19,20;
@@ -45,115 +49,240 @@ tetris1[]=4,
 tetris2[]=4,
 21,22,23,24;
 
+
 tetris3[]=4,
 25,26,27,28;
+
 
 samus[]=4,
 -29,31,29,30;
 
+
 subzero[]=4,
 32,33,-32,34;
+
 
 scorpion[]=4,
 36,37,-36,38;
 
+
 kirby[]=4,
 40,41,-40,42;
+
 
 megaman[]=8,
 -43,-44,45,44,
 43,46,47,-46;
 
+
 masterchief[]=4,
 48,49,-48,50;
 
+
 petey[]=4,
 55,53,-55,54;
+
 
 littlemac[]=8,
 -56,-57,58,57,
 56,56,59,-56;
 
+
 honeyqueen[]=4,
 60,61,-60,62;
+
 
 across1[]=8,
 63,64,65,-64,
 -63,-63,66,63;
 
+
 across2[]=8,
 67,68,69,-68,
 -67,-67,70,67;
+
 
 across3[]=8,
 71,72,73,-72,
 -71,-71,74,71;
 
+
 cjgraph[]=4,
 75,76,-75,77;
 
+
 eggman[]=4,
 -78,79,78,80;
+
 
 gngarthur[]=8,
 -81,-82,83,82,
 81,81,84,-81;
 
+
 nathendrake[]=8,
 88,89,90,-89,
 -88,-88,91,88;
+
 
 babymario[]=8,
 92,93,94,-93,
 -92,95,96,-95;
 
+
 babyluigi[]=8,
 97,98,99,-98,
 -97,100,101,-100;
+
 
 kamek[]=8,
 102,103,104,-103,
 -102,105,106,-105;
 
+
 sonic[]=8,
 107,108,109,-108,
 -107,110,111,-110;
+
 
 tails[]=8,
 112,113,114,-113,
 -112,115,116,-115;
 
+
 steve[]=8,
 117,118,119,-118,
 -117,120,121,-120;
+
 
 bomberman[]=8,
 122,123,124,-123,
 -122,125,126,-125;
 
+
 bigdaddy[]=8,
 127,128,129,129,
 130,130,131,127;
+
 
 bowserjr[]=8,
 132,133,134,-133,
 -132,-135,136,135;
 
+
 srageaxel[]=8,
 137,138,139,-138,
 -137,137,140,137;
+
 
 srageskate[]=8,
 141,142,143,-142,
 -141,-141,144,141;
 
+
 solidsnake[]=4,
 146,145,
 -146,147;
 
+
 ratchetclank[]=8,
 148,149,150,-149,
 -148,-148,151,148;
+
+
+alexkidd[]=8,
+152,153,154,-153,
+-152,-152,155,152;
+
+
+banjograph[]=8,
+156,157,158,-157,
+-156,-156,159,156;
+
+
+catpeach[]=8,
+160,161,162,-161,
+-160,163,164,-163;
+
+
+crashb[]=12,
+165,166,167,168,-167,-166,
+-165,-165,169,169,169,165;
+
+
+diddykong[]=8,
+170,171,172,-171,
+-170,-170,173,170;
+
+
+donkeykong[]=12,
+-174,175,176,177,-176,-175,
+174,178,178,179,-178,-178;
+
+
+drybones[]=8,
+180,181,182,-181,
+-180,183,182,-183;
+
+
+drybonesbowser[]=8,
+185,186,187,-186,
+-185,188,189,-188;
+
+
+dukenukem[]=8,
+191,192,193,-192,
+-191,-192,194,191;
+
+
+earthwormjim[]=4,
+195,196,
+-195,197;
+
+
+echograph[]=8,
+199,200,201,-200,-201,
+-199,-199,202,199;
+
+
+funkykong[]=8,
+283,284,284,-284,
+-203,206,207,-206;
+
+ghostblue[]=8,
+208,209,210,-209,
+-208,211,212,-211;
+
+
+gilius[]=8,
+213,214,215,-214,
+-213,216,217,-216;
+
+
+gokugraph[]=8,
+218,219,220,-219,
+-218,221,222,-221;
+
+
+goldpeach[]=8,
+223,224,225,-224,
+-223,226,227,-226;
+
+
+hammerbros[]=8,
+228,229,230,-229,
+-228,231,232,-231;
+
+
+iggy[]=8,
+233,234,235,-234,
+-233,236,237,-236;
+
+
+king[]=4,
+238,239,
+-238,240;
+
 
 
 
@@ -205,8 +334,8 @@ p1=0;
 begin
 
 // Load graphics
-file1=load_fpg("kart2.FPG");
-file2=load_fpg("ash.fpg");
+file1=load_fpg("kart101/kart2.FPG");
+file2=load_fpg("kart101/ash.fpg");
 
 
 fade_on();
@@ -304,8 +433,10 @@ player(graph+14,x+55,y,90000);
 //y+=20;
 
 graph +=15;
-IF ( graph > 42 )
-graph = 0;
+IF ( graph > 61 )
+graph = 1;
+break;
+
 END
 
 /*
@@ -480,7 +611,7 @@ begin
   //  if(mid&1)
   if(mid==-1)
     playernum=1;
-    mid=rand(0,42);
+    mid=43;//rand(0,42);
 
     //file = file2;
     //xgraph=offset playergraph[mid*30];//mariograph;
@@ -647,6 +778,87 @@ begin
             case 42:
                 xgraph = offset ratchetclank;
             end
+
+            case 43:
+                xgraph = offset alexkidd;
+            end
+
+            case 44:
+                xgraph = offset banjograph;
+            end
+
+            case 45:
+                xgraph = offset catpeach;
+            end
+
+            case 46:
+                xgraph = offset crashb;
+            end
+
+            case 47:
+                xgraph = offset diddykong;
+            end
+
+            case 48:
+                xgraph = offset donkeykong;
+            end
+
+            case 49:
+                xgraph = offset drybones;
+            end
+
+            case 50:
+                xgraph = offset drybonesbowser;
+            end
+
+            case 51:
+                xgraph = offset dukenukem;
+            end
+
+            case 52:
+                xgraph = offset earthwormjim;
+            end
+
+            case 53:
+                xgraph = offset echograph;
+            end
+
+            case 54:
+                xgraph = offset king;
+            end
+
+            case 55:
+                xgraph = offset funkykong;
+            end
+
+            case 56:
+                xgraph = & ghostblue;
+            end
+
+            case 57:
+                xgraph = & gilius;
+            end
+
+            case 58:
+                xgraph = & gokugraph;
+            end
+
+            case 59:
+                xgraph = & goldpeach;
+            end
+
+            case 60:
+                xgraph = & hammerbros;
+            end
+
+            case 61:
+                xgraph = & iggy;
+            end
+
+            case 62:
+                xgraph = & iggy;
+            end
+
 
 
 
