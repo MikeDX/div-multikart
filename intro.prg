@@ -8,6 +8,14 @@ coinsound;
 introsound1;
 introsound2;
 vol=256;
+introfile = 0;
+
+spin[]=
+8,9,10,11,
+12,-11,-10,-9,
+-8,-6,-5,-4,-3,-2,
+1,2,3,4,5,6;
+
 
 
 BEGIN
@@ -23,15 +31,14 @@ PROCESS mkintro()
 
 PRIVATE
 s=0;
-introfile = 0;
 
 BEGIN
 
 file1=load_fpg("kart101/kart2.FPG");
 file2=load_fpg("kart101/ash.fpg");
 coinsound=load_wav("kart101/intro/coin.wav",0);
-introsound1=load_wav("kart101/intro/intro1.wav",0);
-introsound2=load_wav("kart101/intro/main.wav",1);
+introsound1=load_song("kart101/intro/intro1.ogg",0);
+introsound2=load_song("kart101/intro/main.ogg",1);
 
 introfile = load_fpg("kart101/intro.fpg");
 
@@ -65,7 +72,7 @@ file = introfile;
 graph=3;
 x=128;
 y=112;
-s=sound(introsound1,256,256);
+s=song(introsound1);
 
 fade_on();
 scroll[0].x0=0;
@@ -73,8 +80,8 @@ karts();
 
 while(scroll[0].x0<1992)
 
-if(!is_playing_sound(s));
-sound(introsound2,256,256);
+if(!is_playing_song());
+s=song(introsound2);
 end
 
 scroll[0].x0++;
@@ -110,6 +117,7 @@ process karts()
 private
 
 counter=0;
+ograph = 0;
 
 
 BEGIN
@@ -118,7 +126,7 @@ file = file1;
 graph = 8;
 
 x=-256;
-y=166;
+y=167;
 
 clone
     graph = 76; // luigi
@@ -166,6 +174,47 @@ loop
         counter=0;
     end
 
+    if ( graph == 42 )
+        if ( x == 32)
+            shell();
+        END
+
+        if ( x > 270)
+            debug;
+            signal ( type karts, s_kill);
+        end
+
+
+    END
+
+    if ( graph == 127 )
+
+    if ( collision (type shell))
+        ograph = graph-8;
+
+        spark();
+
+        LOOP
+
+        FROM counter = 0 to 19;
+            if ( spin[counter]<0)
+            flags=1;
+            else
+            flags = 0;
+            end
+
+            graph = abs(spin[counter])+ograph;
+
+            frame(200);
+            x-=2;
+        end
+
+        END
+
+    end
+
+    end
+
 
     frame;
 
@@ -176,3 +225,60 @@ end
 
 
 END
+
+PROCESS shell()
+
+private
+
+count;
+
+BEGIN
+
+z=256;
+
+file = introfile;
+
+//debug;
+
+
+x=father.x;
+y=father.y+8;
+graph=4;
+
+LOOP
+count ++;
+x=x+3;
+
+if (count < 3 )
+graph = 4;
+else
+graph=5;
+end
+
+if ( count > 5)
+count =0;
+end
+
+
+FRAME;
+
+
+
+END
+
+END
+
+PROCESS spark()
+
+BEGIN
+file = introfile;
+
+graph = 6;
+x=father.x-16;
+y=father.y+8;
+
+FRAME(400);
+signal(get_id(type shell),s_kill);
+
+END
+
