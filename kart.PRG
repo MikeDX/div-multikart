@@ -3,6 +3,10 @@ program kart;
 
 global
 
+
+pids[120];
+
+
 kartid=0;
 racing = false;
 
@@ -564,8 +568,8 @@ private
 
 a=0;
 b=0;
-w=320;
-h=240;
+w=640;
+h=480;
 point = 0;
 //mult=1;
 p1=0;
@@ -853,9 +857,12 @@ track=900;
 anim=0;
 pid =0 ;
 
+count=0;
+
 begin
     kartid++;
     kid=kartid;
+    pids[kid]=id;
 
    cnumber=c_0;
   //  x=x-24;
@@ -1487,9 +1494,10 @@ end
 
 END
 
-while ( (pid = get_id ( type player )))
-
-if ( pid !=id )
+for(count=kid+1;count<102;count++)
+// ( (pid = get_id ( type player )))
+pid=pids[count];
+if ( pid !=0 )
 
 //fangle = get_angle ( pid );
 fangle = pid.accel;
