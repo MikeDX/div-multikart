@@ -4,6 +4,7 @@ program kart;
 global
 
 kartid=0;
+racing = false;
 
 pipegraph[] = 1,700;
 
@@ -556,14 +557,15 @@ local
 
 speed;
 
+accel=0;
 
 
 private
 
 a=0;
 b=0;
-w=640;
-h=480;
+w=320;
+h=240;
 point = 0;
 //mult=1;
 p1=0;
@@ -793,6 +795,10 @@ end
 
 end
 
+if ( key (_space))
+racing = true;
+end
+
 
 frame;
 
@@ -825,8 +831,8 @@ process player(mid,x,y,angle)
 
 
 private
-    accel=0;
-    playernum=0;//false;
+
+playernum=0;//false;
 p1;
 cpu = false;
 pixel = 0;
@@ -845,7 +851,7 @@ can_pickup_bonus=1;
 track=900;
 
 anim=0;
-
+pid =0 ;
 
 begin
     kartid++;
@@ -1426,7 +1432,8 @@ if (fget_dist(x,y,px,py) < accel*10)
 end
 
 
-IF ( accel < 40 +kid/2 )
+
+IF ( accel < 40 +kid/5 )
     accel++;
 END
 
@@ -1480,8 +1487,31 @@ end
 
 END
 
+while ( (pid = get_id ( type player )))
+
+if ( pid !=id )
+
+//fangle = get_angle ( pid );
+fangle = pid.accel;
+
+IF ( get_dist(pid) < fangle && fangle > 5 )
+xadvance(pid.angle,fangle);
+pid.accel/=2;
+accel = fangle;
+
+end
+
+end
+
+end
+
+
+
+if ( racing )
 
 advance(accel);
+
+end
 
 pixel = map_get_pixel(file1,950,x/80,y/80);
 
@@ -1597,11 +1627,11 @@ xgraph=father.xgraph;
 flags=father.flags;
 
 if ( xgraph == offset eggman )
-  size=500;
+    size=500;
 end
 
 if ( xgraph == offset pongball )
-height = 100;
+    height = 100;
 end
 
 
