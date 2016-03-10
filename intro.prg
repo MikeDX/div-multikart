@@ -17,6 +17,8 @@ spin[]=
 1,2,3,4,5,6;
 
 
+mode = 0;
+
 
 BEGIN
 set_mode(256224);
@@ -76,9 +78,10 @@ s=song(introsound1);
 
 fade_on();
 scroll[0].x0=0;
-karts();
 
-while(scroll[0].x0<1992)
+karts(0);
+
+while(scroll[0].x0<1700)
 
 if(!is_playing_song());
 s=song(introsound2);
@@ -88,6 +91,9 @@ scroll[0].x0++;
 
 frame;
 end
+
+mode=0;
+
 fade(0,0,0,3);
 vol=256;
 
@@ -112,12 +118,10 @@ END
 
 
 
-process karts()
+process karts(mtype)
 
 private
 
-counter=0;
-ograph = 0;
 
 
 BEGIN
@@ -128,36 +132,98 @@ graph = 8;
 x=-256;
 y=167;
 
-clone
+switch(mtype)
+case 0:
+
+    kart(x,y,graph);   // mario
+
     graph = 76; // luigi
     x-=64;
     y+=8;
 
-    clone
-        graph = 127;  // toad
-        x-=128;
-    end
+    kart (x,y,graph);
+
+    graph = 25;  // princess
+    x-=64;
+    y-=8;
+
+    kart (x,y,graph);
+
+    graph = 127;  // toad
+    x-=64;
+    y+=8;
+
+    kart (x,y,graph);
+
+    graph = 42;   // bowser
+    x-=96;
+
+    kart (x,y,graph);
+end
+
+case 1:
+    x+=224;
+
+    y+=8;
+
+    graph = 110; // dkjr
+    kart(x,y,graph);
+    x-=128;
+
+    graph = 93; // yoshi
+    kart(x,y,graph);
+end
+
+case 2:
+    mode = 2;
+
+    graph = 8; // mario
+    x+=152;
+    y+=8;
+    kart(x,y,graph);
+
+end
+
+case 3:
+
+    mode = 3;
+
+    x+=208;
+
+    y+=8;
+
+    graph = 76; //luigi
+    kart(x,y,graph);
+
+    x-=32;
+    graph = 59; // troppa;
+    kart(x,y,graph);
+
+
+    x-=32;
+    graph = 42; // bowser
+    kart(x,y,graph);
+
+    x-=32;
+    graph = 25; // princess
+    kart(x,y,graph);
 
 
 end
 
-if(graph==8);
-    clone
-        graph = 25;  // princess
-        x-=128;
-    end
+end  // end case
+
 end
 
-if ( graph == 127 )
-    clone
-        graph = 42;   // bowser
-        x-=96;
-    end
-end
+process kart(x,y,graph)
+private
+counter=0;
+ograph = 0;
+
+BEGIN
 
 
-
-loop
+while ( !out_region(id,0) || x< 0)
 
     x++;
     counter++;
@@ -174,14 +240,20 @@ loop
         counter=0;
     end
 
-    if ( graph == 42 )
-        if ( x == 32)
+    if ( graph == 42 && mode == 0 )
+
+        if ( x == 32 )
             shell();
         END
 
-        if ( x > 270)
-            debug;
+        if ( x == 270)
+
+            karts(1);
+
             signal ( type karts, s_kill);
+            frame;
+            return;
+
         end
 
 
@@ -194,30 +266,64 @@ loop
 
         spark();
 
-        LOOP
+        spinkart(200,-2);
+        return;
 
-        FROM counter = 0 to 19;
-            if ( spin[counter]<0)
-            flags=1;
-            else
-            flags = 0;
-            end
+     end
 
-            graph = abs(spin[counter])+ograph;
+    end
 
-            frame(200);
-            x-=2;
-        end
+    if ( graph == 110 )
+        if ( x == 208)
+        banana(x,y+8);
+        END
+    END
 
+    IF ( graph == 8 && mode == 2)
+
+        IF ( x >=32)
+
+            signal(type banana , s_kill);
+
+            spinkart(200,0);
+
+            karts(3);
+
+
+            return;
         END
 
+
+    END
+
+
+    if ( graph == 93 )
+
+        frame(80);
+
+        if(x>=170)//collision(type banana))
+          // debug;
+           karts(2);
+
+           spinkart(200,-4);
+           return;
+
+        end
+
+    else
+
+    if ( graph == 25 && mode == 3 && x == 64)
+        supermario();
     end
 
+    if ( collision(type supermario))
+        spinkart(200,-2);
+        return;
     end
-
 
     frame;
 
+    end
 //frame(200);
 
 end
@@ -282,3 +388,75 @@ signal(get_id(type shell),s_kill);
 
 END
 
+
+PROCESS banana(x,y)
+
+BEGIN
+file = introfile;
+
+graph=7;
+
+LOOP
+x--;
+FRAME;
+
+END
+
+END
+
+
+process spinkart (framerate, xoff)
+
+private
+counter;
+ograph;
+
+
+begin
+x=father.x;
+y=father.y;
+graph=father.graph;
+
+ ograph=graph-8;
+ WHILE ( !out_region(id,0))
+ FROM counter = 0 to 19;
+
+                if ( spin[counter]<0)
+                    flags=1;
+                else
+                    flags = 0;
+                end
+
+                graph = abs(spin[counter])+ograph;
+
+                frame(framerate);
+            x+=xoff;
+        end
+    END
+
+
+END
+
+process supermario()
+
+begin
+
+x=32;
+y=father.y;
+
+graph = 8;
+
+signal ( type spinkart, s_kill);
+
+while(!out_region(id,0));
+
+x+=3;
+
+
+frame;
+
+end
+
+debug;
+
+end
