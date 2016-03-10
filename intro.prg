@@ -302,7 +302,6 @@ while ( !out_region(id,0) || x< 0)
         frame(80);
 
         if(x>=170)//collision(type banana))
-          // debug;
            karts(2);
 
            spinkart(200,-4);
@@ -344,7 +343,6 @@ z=256;
 
 file = introfile;
 
-//debug;
 
 
 x=father.x;
@@ -457,6 +455,5 @@ frame;
 
 end
 
-debug;
 
 end
