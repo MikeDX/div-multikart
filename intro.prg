@@ -86,9 +86,9 @@ s=0;
 
 BEGIN
 
-file1=load_fpg("kart101/kart2.FPG");
-file2=load_fpg("kart101/ash.fpg");
-coinsound=load_wav("kart101/intro/coin.wav",0);
+file1=load_fpg("kart2.FPG");
+file2=load_fpg("ash.fpg");
+coinsound=load_wav("intro/coin.wav",0);
 introsound1=load_song("kart101/intro/intro1.ogg",0);
 introsound2=load_song("kart101/intro/main.ogg",1);
 

@@ -524,10 +524,6 @@ wriggler3[]=4,
 449,446;
 
 
-
-
-
-
 //,3,2,1,4,5,6;
 //1,2,3,4,5,6;
 
@@ -535,7 +531,7 @@ wriggler3[]=4,
 // 901 =
 // 902 = ghost house level
 // 903 = bowsers castle
-coursemap = 900;
+coursemap = 906;
 back1=801;
 back2=0;
 // 863 = bowsers castle
@@ -556,20 +552,28 @@ bammo;
 btime;
 c_coin = 143;
 coins=0;
-
+introfile=0;
 local
+
+dist=0;
+
+lap=0;
 
 speed;
 
 accel=0;
+
+position=0;
+
+target_point=0;
 
 
 private
 
 a=0;
 b=0;
-w=640;
-h=480;
+w=256;
+h=224;
 point = 0;
 //mult=1;
 p1=0;
@@ -578,6 +582,8 @@ begin
 // Load graphics
 file1=load_fpg("kart101/kart2.FPG");
 file2=load_fpg("kart101/ash.fpg");
+introfile = load_fpg("kart101/intro.fpg");
+load_fnt("numbers.fnt");
 
 pacanim[0]=&pacman1;
 pacanim[1]=&pacman2;
@@ -618,15 +624,15 @@ end
 set_mode(w*1000+h);
 
 // setup region player 1
-define_region(1,0,0,w,27);
-define_region(2,0,0,w,h/2);
+define_region(1,0,3,w,27);
+define_region(2,0,3,w,104);
 
 start_scroll(0,file1,back1,back2,1,5);
 start_mode7(0,file1,coursemap,courseback,2,25);
 
 m7.height=96;
 //m7.camera=player(0,912,684,90000);
-get_point(file, coursemap, 8, &x , &y);
+get_point(file1, coursemap, 8, &x , &y);
 
 m7.camera=player(-1,x,y,90000);
 
@@ -634,8 +640,8 @@ m7.camera=player(-1,x,y,90000);
 m7.distance=60;
 
 //setup region (player 2)
-define_region(3,0,h/2,w,27);
-define_region(4,0,h/2,w,h/2);
+define_region(3,0,115,w,27);
+define_region(4,0,115,w,104);
 
 start_scroll(1,file1,3,2,3,5);
 start_mode7(1,file1,coursemap,courseback,4,27);
@@ -653,14 +659,14 @@ frame;
 
 FROM point = 1 to 8;
 //point =1 ;
-get_point(file, coursemap, point, &x , &y);
+get_point(file1, coursemap, point, &x , &y);
+
 y-=20;
 
 
 //FROM point = 1 to 4;
 y+=20;
-//debug;
-x=926;//
+//x=926;//
 //x-=30;
 x-=5;
 
@@ -706,7 +712,7 @@ end
 
 FROM point = 10 to 17;// to 255;
 
-get_point(file, coursemap, point, &x, &y);
+get_point(file1, coursemap, point, &x, &y);
 pipe(x,y);
 
 end
@@ -802,6 +808,13 @@ end
 if ( key (_space))
 racing = true;
 end
+file=introfile;
+z=1024;
+
+x=w/2;
+y=h/2;
+graph=2;
+
 
 
 frame;
@@ -856,11 +869,23 @@ track=900;
 
 anim=0;
 pid =0 ;
+tx=0;
+ty=0;
+newlap=0;
+last_point=0;
 
 count=0;
+ STRUCT points[100]
+      x,y;
+    END
+num_points=0;
+fx=0;
+fy=0;
 
 begin
     kartid++;
+    position=kartid;
+
     kid=kartid;
     pids[kid]=id;
 
@@ -871,6 +896,9 @@ begin
     x=x*10;
     y=y*10;
 
+    get_point(file1,coursemap,99,&fx,&fy);
+
+
   //  if(mid&1)
   if(mid==-1)
     playernum=1;
@@ -878,6 +906,17 @@ begin
 
     //file = file2;
     //xgraph=offset playergraph[mid*30];//mariograph;
+    write_int(0,0,40,0,&num_points);
+
+    write_int(0,0,50,0,&dist);
+
+    write_int(1,245,85,5,&position);
+
+    write_int(0,0,70,0,&lap);
+
+    write_int(0,0,80,0,&target_point);
+
+
 
     if(mid!=0)
         ps=0;
@@ -893,6 +932,7 @@ begin
 
     px=px*10;
     py=py*10;
+
   end
   //  file = file2;
     if(mid<8)
@@ -925,7 +965,6 @@ begin
             case 13:
                 xgraph = offset tetris3;
             end
-
 
             case 14:
                 xgraph = offset samus;
@@ -1282,7 +1321,7 @@ begin
   //  xgraph=offset playergraph[mid*30];//
   end
 
- /* write_int(0,0,mid*10,0,&angle);
+ /*write_int(0,0,mid*10,0,&angle);
   write_int(0,60,mid*10,0,&fangle);
   write_int(0,120,mid*10,0,&cangle);
    */
@@ -1314,10 +1353,10 @@ xgraph = pacanim[anim/2];
 end
 
 
-if(x>10240) x-=10240; end
-if(y>10240) y-=10240; end
-if(x<0) x+=10240; end
-if(y<0) y+=10240; end
+//if(x>10240) x-=10240; end
+//if(y>10240) y-=10240; end
+//if(x<0) x+=10240; end
+//if(y<0) y+=10240; end
 
 
 
@@ -1394,24 +1433,26 @@ end//////////////////////////////////////
 
 
 //coin collector//////////////////////////////
-from point=20 to 69;
- get_point(0,track,point,&px,&py);px*=10;py*=10;
+from point=20 to 80;
+ get_point(file1,track,point,&px,&py);px*=10;py*=10;
  c_dist=fget_dist(x,y,px,py);
- colour_check=map_get_pixel(0,coursemap,px/10,py/10);
+ colour_check=map_get_pixel(file1,coursemap,px/10,py/10);
  if(colour_check==c_coin and c_dist<60)
   coins++;//20to54coins //60to71bonus's
   coin_flip(x,y);
-  if(track==900)map_put(0,coursemap,854,px/10,py/10);else
-  if(track==901)map_put(0,coursemap,855,px/10,py/10);else
+  if(track==900)map_put(file1,coursemap,854,px/10,py/10);else
+  if(track==901)map_put(file1,coursemap,855,px/10,py/10);else
   if(track==902)
-   if((point>28 and point<32)or(point>38))map_put(0,coursemap,862,px/10+1,py/10+1);else
-   map_put(0,coursemap,861,px/10+1,py/10+1);end
+   if((point>28 and point<32)or(point>38))map_put(file1,coursemap,862,px/10+1,py/10+1);else
+   map_put(file1,coursemap,861,px/10+1,py/10+1);end
   else
-  if(track==903)map_put(0,coursemap,854,px/10,py/10);else
-  if(track==904)map_put(0,coursemap,854,px/10,py/10);else
+  if(track==903)map_put(file1,coursemap,854,px/10,py/10);else
+  if(track==904)map_put(file1,coursemap,854,px/10,py/10);else
   end end end end end
  end
 end//////////////////////////////////////
+
+
 ELSE  // CPU CONTROLS
 
 //px=px*10;
@@ -1422,19 +1463,18 @@ ELSE  // CPU CONTROLS
 if (fget_dist(x,y,px,py) < accel*10)
     //debug;
     point = point +1;
-
-    if (point > 110 )
+    get_point(file1, coursemap, point, &px, &py );
+    if (px<0 )
         point = 100;
     end
 
-        get_point(file1, coursemap, point, &px, &py );
+    get_point(file1, coursemap, point, &px, &py );
+
 
     px=px+rand(-accel/10,accel/10);
     py=py+rand(-accel/10,accel/10);
     px=px*10;
     py=py*10;
-
-
 
 end
 
@@ -1494,10 +1534,66 @@ end
 
 END
 
+target_point = map_get_pixel(file1,coursemap+30,x/80,y/80);
+
+if(target_point == 1 && last_point == 13)
+//if(cpu==false)
+//debug;
+//end
+lap++;
+end
+
+if(target_point >= 12 && target_point <2)
+lap--;
+end
+
+if(target_point!=last_point)
+last_point = target_point;
+end
+
+//num_points=path_find(0,file1,coursemap+30,80,fx*10,fy*10,OFFSET points,sizeof(points));
+//debug;
+/*
+if(num_points>0)
+    dist=0;
+
+    for(point=0;point<num_points;point++)
+        dist+=fget_dist(x,y,points[point].x,points[point].y);
+    end
+
+end
+*/
+
+//frame(50);
+
+get_point(file1,coursemap+30,target_point,&tx,&ty);
+
+target_point+=lap*50;
+
+tx=tx*80;
+ty=ty*80;
+dist = fget_dist(x,y,tx,ty);
+
+frame(50);
+
 for(count=kid+1;count<102;count++)
 // ( (pid = get_id ( type player )))
+
 pid=pids[count];
-if ( pid !=0 )
+
+if(pid !=0 && pid !=id)
+if( ( pid.target_point > target_point && pid.position > position ) ||
+    ( pid.target_point < target_point && pid.position < position ) ||
+    ( pid.target_point == target_point && dist < pid.dist && pid.position<position) ||
+    ( pid.target_point == target_point && dist > pid.dist && pid.position>position ) )
+    if ( pid.lap == lap)
+    fangle = pid.position;
+    pid.position=position;
+    position=fangle;
+    end
+//    debug;
+end
+
 
 //fangle = get_angle ( pid );
 fangle = pid.accel;
@@ -1508,7 +1604,6 @@ pid.accel/=2;
 accel = fangle;
 
 end
-
 end
 
 end
@@ -1521,7 +1616,7 @@ advance(accel);
 
 end
 
-pixel = map_get_pixel(file1,950,x/80,y/80);
+pixel = map_get_pixel(file1,coursemap+50,x/80,y/80);
 
 if ( pixel==232)
     advance (-accel);
@@ -1534,7 +1629,7 @@ if ( pixel == 108 )
 END
 
 
-frame;
+frame(50);
 
 end
 
@@ -1557,7 +1652,7 @@ height=-512;
 m7[1].height=768*3;
 m7[1].focus=300;//1408;
 m7[1].distance=1408;//393;//1408;
-m7[1].horizon=-145;
+m7[1].horizon=-66;
 
 //m7[1].focus=512;
 
